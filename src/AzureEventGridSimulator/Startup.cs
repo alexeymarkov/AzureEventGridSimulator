@@ -40,6 +40,7 @@ namespace AzureEventGridSimulator
             services.AddSingleton(o => _loggerFactory.CreateLogger(nameof(AzureEventGridSimulator)));
             services.AddScoped<SasKeyValidator>();
             services.AddSingleton<ValidationIpAddress>();
+            services.AddSingleton<EventStore>();
 
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Latest);

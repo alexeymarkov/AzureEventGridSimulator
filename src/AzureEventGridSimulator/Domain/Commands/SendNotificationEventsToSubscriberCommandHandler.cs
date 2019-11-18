@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AzureEventGridSimulator.Domain.Entities;
+using AzureEventGridSimulator.Domain.Services;
 using AzureEventGridSimulator.Infrastructure.Extensions;
 using AzureEventGridSimulator.Infrastructure.Settings;
 using MediatR;
@@ -16,16 +17,20 @@ namespace AzureEventGridSimulator.Domain.Commands
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger _logger;
+        private readonly EventStore _eventStore;
 
-        public SendNotificationEventsToSubscriberCommandHandler(IHttpClientFactory httpClientFactory, ILogger logger)
+        public SendNotificationEventsToSubscriberCommandHandler(IHttpClientFactory httpClientFactory, ILogger logger, EventStore eventStore)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _eventStore = eventStore;
         }
 
         protected override Task Handle(SendNotificationEventsToSubscriberCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("{EventCount} event(s) received on topic '{TopicName}'", request.Events.Length, request.Topic.Name);
+
+            _eventStore.Add(request.Events);
 
             foreach (var eventGridEvent in request.Events)
             {

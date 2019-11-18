@@ -38,6 +38,12 @@ namespace AzureEventGridSimulator.Infrastructure.Middleware
                 return;
             }
 
+            if (IsStoreRequest(context))
+            {
+                await _next(context);
+                return;
+            }
+
             // This is the end of the line.
             await context.Response.ErrorResponse(HttpStatusCode.BadRequest, "Request not supported.");
         }
@@ -144,6 +150,12 @@ namespace AzureEventGridSimulator.Infrastructure.Middleware
                    string.Equals(context.Request.Path, "/validate", StringComparison.OrdinalIgnoreCase) &&
                    context.Request.Query.Keys.Any(k => string.Equals(k, "id", StringComparison.OrdinalIgnoreCase)) &&
                    Guid.TryParse(context.Request.Query["id"], out _);
+        }
+
+        private bool IsStoreRequest(HttpContext context)
+        {
+            return context.Request.Method == HttpMethods.Get &&
+                   context.Request.Path.ToString().StartsWith("/api/eventstore", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
