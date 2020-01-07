@@ -7,7 +7,6 @@ using AzureEventGridSimulator.Infrastructure.Middleware;
 using AzureEventGridSimulator.Infrastructure.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -40,15 +39,19 @@ namespace AzureEventGridSimulator
             services.AddSingleton(o => _loggerFactory.CreateLogger(nameof(AzureEventGridSimulator)));
             services.AddScoped<SasKeyValidator>();
             services.AddSingleton<ValidationIpAddress>();
+            services.AddSingleton<EventHistory>();
 
-            services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseMiddleware<EventGridMiddleware>();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
         }
     }
 

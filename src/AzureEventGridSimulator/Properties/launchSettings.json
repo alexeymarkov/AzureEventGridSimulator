@@ -8,6 +8,7 @@
   "profiles": {
     "AzureEventGridSimulator": {
       "commandName": "Project",
+      "commandLineArgs": "--ConfigFile=y:\\Git\\Repos\\GreenWave\\GreenWave.WebApi\\GreenWave.WebApi.IntegrationTests\\Artifacts\\azure.eventgrid.simulator.settings.json",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
