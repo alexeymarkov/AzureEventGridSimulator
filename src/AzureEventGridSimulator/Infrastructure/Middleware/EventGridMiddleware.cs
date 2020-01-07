@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -78,9 +79,15 @@ namespace AzureEventGridSimulator.Infrastructure.Middleware
                 return;
             }
 
-            context.Request.EnableBuffering();
-            var requestBody = await context.RequestBody();
+            string requestBody;
+            using (var reader = new StreamReader(context.Request.Body))
+            {
+                requestBody = await reader.ReadToEndAsync();
+            }
+
             var events = JsonConvert.DeserializeObject<EventGridEvent[]>(requestBody);
+
+            context.Items["events"] = events;
 
             //
             // Validate the overall body size and the size of each event.
@@ -155,7 +162,7 @@ namespace AzureEventGridSimulator.Infrastructure.Middleware
         private bool IsStoreRequest(HttpContext context)
         {
             return context.Request.Method == HttpMethods.Get &&
-                   context.Request.Path.ToString().StartsWith("/api/eventstore", StringComparison.OrdinalIgnoreCase);
+                   context.Request.Path.ToString().StartsWith("/api/eventhistory", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

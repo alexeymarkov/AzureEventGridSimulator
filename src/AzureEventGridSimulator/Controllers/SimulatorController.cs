@@ -28,12 +28,7 @@ namespace AzureEventGridSimulator.Controllers
         {
             get
             {
-                using (var reader = new StreamReader(HttpContext.Request.Body))
-                {
-                    var events = (EventGridEvent[])new JsonSerializer().Deserialize(reader, typeof(EventGridEvent[]));
-
-                    return events;
-                }
+                return (EventGridEvent[])HttpContext.Items["events"];
             }
         }
     }

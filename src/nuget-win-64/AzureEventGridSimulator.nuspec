@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>AzureEventGridSimulator</id>
+    <version>1.0.1</version>
+	<owners>Paul Mcilreavy</owners>
+    <authors>Paul Mcilreavy, Alexey Markov</authors>
+    <summary>AzureEventGridSimulator</summary>
+    <projectUrl>https://github.com/pmcilreavy/AzureEventGridSimulator</projectUrl>
+    <description>AzureEventGridSimulator</description>
+  </metadata>
+  <files>
+    <file src="..\..\build-win-64\AzureEventGridSimulator.exe" target="executable"/>
+    <file src="AzureEventGridSimulator.targets" target="build"/>
+  </files>
+</package>

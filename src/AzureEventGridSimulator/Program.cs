@@ -51,7 +51,7 @@ namespace AzureEventGridSimulator
                         foreach (var topics in simulatorSettings.Topics)
                         {
                             options.Listen(
-                                IPAddress.Any,
+                                IPAddress.Loopback,
                                 topics.Port,
                                 listenOptions =>
                                 {

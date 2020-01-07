@@ -1,0 +1,9 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+  <Target Name="AzureEventGridSimulatorExecutableToBin" BeforeTargets="AfterBuild">
+    <PropertyGroup>
+      <AzureEventGridSimulatorSrcPath>$(MSBuildThisFileDirectory)..\executable\AzureEventGridSimulator.exe</AzureEventGridSimulatorSrcPath>
+      <AzureEventGridSimulatorTargetPath Condition=" '$(AzureEventGridSimulatorTargetPath)' == '' ">$(TargetDir)</AzureEventGridSimulatorTargetPath>
+    </PropertyGroup>
+    <Copy SourceFiles="$(AzureEventGridSimulatorSrcPath)" DestinationFiles="$(AzureEventGridSimulatorTargetPath)AzureEventGridSimulator.exe" SkipUnchangedFiles="true"></Copy>
+  </Target>
+</Project>
